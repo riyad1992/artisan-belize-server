@@ -86,14 +86,14 @@ async function run () {
         // users post api
         app.post('/customers', async(req, res) => {
             const customer = req.body
-            const result = customerCollection.insertOne(customer)
+            const result = await customerCollection.insertOne(customer)
             res.json(result)
         })
 
         // Review post api
         app.post('/reviews', async(req, res) => {
             const review = req.body
-            const result = reviewCollection.insertOne(review)
+            const result = await reviewCollection.insertOne(review)
             res.json(result)
         })
 
