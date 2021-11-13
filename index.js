@@ -135,7 +135,7 @@ async function run () {
             const id = req.params.id
             const updateDoc = req.body;
             const filter = {_id: ObjectId(id)}
-            const result = await customerCollection.updateOne(filter, {$set:{customerName: updateDoc.customerName, price: updateDoc.price, status: updateDoc.status}})
+            const result = await customerCollection.updateOne(filter, {$set:{customerName: updateDoc.customerName, status: updateDoc.status}})
             res.json(result)
         })
 
