@@ -26,6 +26,7 @@ async function run () {
         const productCollection = database.collection('products')
         const customerCollection = database.collection('customers');
         const reviewCollection = database.collection('reviews')
+        const usersCollection = database.collection('users');
 
         // products get api
         app.get('/products', async(req, res) => {
@@ -67,7 +68,7 @@ async function run () {
         app.get('/users/:email', async(req, res) => {
             const email = req.params.email;
             const query = {email}
-            const user = await customerCollection.findOne(query)
+            const user = await usersCollection.findOne(query)
             let isAdmin = false;
             if(user?.role === 'admin'){
                 isAdmin = true
@@ -104,12 +105,28 @@ async function run () {
             });
         });
 
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            console.log(result);
+            res.json(result);
+        });
+
+        app.put('/users', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const options = { upsert: true };
+            const updateDoc = { $set: user };
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
+            res.json(result);
+        });
+
         // make admin
-        app.put('/customers/admin', async(req, res) => {
+        app.put('/users/admin', async(req, res) => {
             const user = req.body
             const filter = {email: user.email}
             const updateDoc = {$set: {role: 'admin'}}
-            const result = await customerCollection.updateOne(filter, updateDoc)
+            const result = await usersCollection.updateOne(filter, updateDoc)
             res.json(result)
         })
 
