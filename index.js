@@ -151,14 +151,14 @@ async function run () {
         // delete orders 
         app.delete('/deleteorder/:id', async(req, res) => {
             const id = req.params.id
-            const result = customerCollection.deleteOne({_id: ObjectId(id)})
+            const result = await customerCollection.deleteOne({_id: ObjectId(id)})
             res.json(result)
         })
 
         // delete Product api
         app.delete('/deleteproduct/:id', async(req, res) => {
             const id = req.params.id
-            const result = productCollection.deleteOne({_id: ObjectId(id)})
+            const result = await productCollection.deleteOne({_id: ObjectId(id)})
             res.json(result)
         })
 
